@@ -53,3 +53,31 @@ display_as_hsv('image.png')
 
 
 
+red_girl_hsv = imread('image.png')
+red_girl_hsv = cv2.cvtColor(red_girl_hsv, cv2.COLOR_RGB2HSV)
+
+plt.figure(num=None, figsize=(8, 6), dpi=80)
+plt.imshow(red_girl_hsv[:,:,0], cmap='hsv')
+plt.colorbar()
+show()
+
+# * We can see that each color refers to a specific range on the color spectrum.
+# ? Let us try to red isolate with HSV color space
+
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+lower_mask = red_girl_hsv [:,:,0] > 0.90
+upper_mask = red_girl_hsv [:,:,0] < 1.00
+
+saturation = red_girl_hsv [:,:,1] > 0.50
+
+mask = upper_mask*lower_mask*saturation
+red = image[:,:,0]*mask
+green = image[:,:,1]*mask
+blue = image[:,:,2]*mask
+red_girl_masked = np.dstack((red,green,blue))
+plt.figure(num=None, figsize=(8, 6), dpi=80)
+imshow(red_girl_masked)
+show()
+
+# ! We were able to successfully isolate the red girl by using the HSV channel
